@@ -81,3 +81,41 @@ INSERT INTO project (organization_id, title, description, location, date) VALUES
 (3, 'Veteran Support Appreciation Day',
  'Organizing a community event offering resources, recognition, and support for veterans.',
  'Winter Haven, FL', '2026-11-06');
+
+-- Category Table --
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name        VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Insert data Categories --
+INSERT INTO category (name) VALUES
+    ('Environmental'),
+    ('Educational'),
+    ('Community Service'),
+    ('Health and Wellness');
+
+-- Project Category Table --
+CREATE TABLE project_category (
+    project_id  INTEGER NOT NULL REFERENCES project(project_id),
+    category_id INTEGER NOT NULL REFERENCES category(category_id),
+    PRIMARY KEY (project_id, category_id)
+);
+
+-- Insert sample data project category associations --
+INSERT INTO project_category (project_id, category_id) VALUES
+    (1, 1), (1, 2),
+    (2, 1),
+    (3, 1), (3, 2),
+    (4, 1),
+    (5, 1), (5, 2),
+    (6, 2), (6, 4),
+    (7, 2),
+    (8, 2), (8, 4),
+    (9, 4),
+    (10, 2),
+    (11, 5), (11, 3),
+    (12, 3),
+    (13, 4), (13, 3),
+    (14, 3), (14, 5),
+    (15, 3);
