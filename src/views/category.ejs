@@ -4,10 +4,12 @@
 
     <h2><%= category.name %></h2>
 
-    <ul>
+        <ul>
         <% projects.forEach(project => { %>
             <li><a href="/project/<%= project.project_id %>"><%= project.title %></a></li>
         <% }); %>
     </ul>
+
+    <p><a href="/edit-category/<%= category.category_id %>">Edit Category</a></p>
 </main>
 <%- include('partials/footer') %>
