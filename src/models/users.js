@@ -25,7 +25,7 @@ const createUser = async (name, email, passwordHash) => {
 
 const findUserByEmail = async (email) => {
    const query = `
-    SELECT u.user_id, u.email, u.password_hash, r.role_name
+    SELECT u.user_id, u.name, u.email, u.password_hash, r.role_name
     FROM users u
     JOIN roles r ON u.role_id = r.role_id
     WHERE u.email = $1
@@ -35,7 +35,7 @@ const findUserByEmail = async (email) => {
     const result = await db.query(query, queryParams);
 
     if (result.rows.length === 0) {
-        return null; // User not found
+        return null; 
     }
 
     return result.rows[0];
@@ -57,10 +57,19 @@ const authenticateUser = async (email, password) => {
     if (!passwordMatches) {
         return null;
     }
-
-    // Never keep the hash on the object we hand back
     delete user.password_hash;
     return user;
 };
 
-export { createUser, authenticateUser };
+const getAllUsers = async () => {
+    const query = `
+        SELECT u.user_id, u.name, u.email, r.role_name
+        FROM users u
+        JOIN roles r ON u.role_id = r.role_id
+        ORDER BY u.name
+    `;
+    const result = await db.query(query);
+    return result.rows;
+};
+
+export { createUser, authenticateUser, getAllUsers, findUserByEmail };
