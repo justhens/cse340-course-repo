@@ -6,6 +6,7 @@ import { showProjectsPage, showProjectDetailsPage, showNewProjectForm, processNe
 import { testErrorPage } from './controllers/errors.js';
 import { showCategoriesPage, showCategoryDetailsPage, showAssignCategoriesForm, processAssignCategoriesForm, categoryValidation, showNewCategoryForm, processNewCategoryForm, showEditCategoryForm, processEditCategoryForm } from './controllers/categories.js';
 import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showUsersPage } from './controllers/users.js';
+import { processVolunteer, processUnvolunteer } from './controllers/volunteers.js';
 
 const router = express.Router();
 
@@ -57,5 +58,8 @@ router.get('/dashboard', requireLogin, showDashboard);
 
 // Admin-only users page
 router.get('/users', requireRole('admin'), showUsersPage);
+// Volunteer routes (login required)
+router.post('/volunteer/:projectId', requireLogin, processVolunteer);
+router.post('/unvolunteer/:projectId', requireLogin, processUnvolunteer);
 
 export default router;

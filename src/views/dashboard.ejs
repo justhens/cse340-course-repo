@@ -10,12 +10,26 @@
         <p><strong>Role:</strong> <%= user.role_name %></p>
     </section>
 
-    <% if (user && user.role_name === 'admin') { %>
-        <section class="dashboard-card">
-            <h2>Admin Tools</h2>
-            <p><a href="/users" class="dashboard-link">View All Users</a></p>
-        </section>
-    <% } %>
-</main>
+    <section class="dashboard-card">
+        <h2>My Volunteer Projects</h2>
 
-<%- include('partials/footer') %>
+        <% if (volunteerProjects.length === 0) { %>
+            <p>You have not signed up to volunteer for any projects yet.</p>
+        <% } else { %>
+            <ul class="volunteer-list">
+                <% volunteerProjects.forEach(project => { %>
+                    <li>
+                        <div>
+                            <a href="/project/<%= project.project_id %>"><%= project.title %></a>
+                            <span class="volunteer-meta">
+                                <%= project.organization_name %> &middot; <%= project.date.toLocaleDateString() %>
+                            </span>
+                        </div>
+                        <form action="/unvolunteer/<%= project.project_id %>" method="POST">
+                            <input type="hidden" name="returnTo" value="dashboard">
+                            <button type="submit" class="link-button">Remove</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } %>
